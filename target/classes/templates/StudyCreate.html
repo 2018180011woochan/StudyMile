@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+
+<body>
+<nav th:replace="~{navationbar :: navbarFragment}"></nav>
+
+<div class="container">
+
+    <h5 class="my-3 border-bottom pb-2">게시글 작성</h5>
+
+<!--    form 태그의 action을 제거하면  현재 URL을 기준으로 보내준다-->
+    <form th:object="${posts}" method="post">
+
+        <!--  제목 및 내용 미입력시-->
+        <div class="alert alert-danger d-flex align-items-center" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}">  </div>
+        </div>
+
+        <!-- 카테고리 선택 -->
+        <div>
+            <label for="category">카테고리: </label>
+            <select name="category" id="category" th:field="*{category}">
+                <option value="기타" th:selected="${posts.category == '기타'}">기타</option>
+                <option value="스프링" th:selected="${posts.category == '스프링'}">스프링</option>
+                <option value="알고리즘" th:selected="${posts.category == '알고리즘'}">알고리즘</option>
+                <option value="자바" th:selected="${posts.category == '자바'}">자바</option>
+                <option value="파이썬" th:selected="${posts.category == '파이썬'}">파이썬</option>
+                <option value="프론트엔드" th:selected="${posts.category == '프론트엔드'}">프론트엔드</option>
+            </select>
+        </div>
+
+        <!-- 완료 여부 선택 -->
+<!--        <div>-->
+<!--            <label for="isComplete">완료 여부: </label>-->
+<!--            <select name="isComplete" id="isComplete">-->
+<!--                <option value="true">완료</option> &lt;!&ndash; 완료 시 post.is_complete = 1 &ndash;&gt;-->
+<!--                <option value="false">미완료</option> &lt;!&ndash; 미완료 시 post.is_complete = 0 &ndash;&gt;-->
+<!--            </select>-->
+<!--        </div>-->
+        <div>
+            <label for="isComplete">완료 여부: </label>
+            <select name="isComplete" id="isComplete" th:field="*{complete}">
+                <option value="true" th:selected="${posts.complete}">완료</option> <!-- 완료 시 complete = true -->
+                <option value="false" th:selected="${!posts.complete}">미완료</option> <!-- 미완료 시 complete = false -->
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="postsTitle" class="form-label">제목</label>
+            <input type="text" th:field="*{postsTitle}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="postsContents" class="form-label">내용</label>
+            <textarea th:field="*{postsContents}" class="form-control" rows="10"></textarea>
+        </div>
+
+        <!-- 오른쪽에 버튼두기 -->
+        <div class="d-flex justify-content-end mt-2">
+            <!-- 작성 버튼 (form 제출) -->
+            <input type="submit" value="저장하기" class="btn btn-dark me-2">
+            <!-- 취소 버튼 -->
+            <a th:href="@{|/main/studyPosting/detail/${posts.id}|}" class="btn btn-dark">취소</a>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

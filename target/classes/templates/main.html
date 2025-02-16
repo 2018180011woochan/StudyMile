@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 화면</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="/mainstyle.css">
+</head>
+<body>
+
+<!-- 네비게이션바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="d-flex align-items-center">
+        <img src="/images/smile_logo.png" alt="Smile Logo" class="navbar-brand">
+        <a class="navbar-brand" href="/">
+            <span>SMILE</span>
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <!-- 로그인/로그아웃, 마이페이지 버튼 (우측 상단에 배치) -->
+    <div class="d-flex justify-content-end mb-3">
+        <div th:if="${loggedInUser == null}">
+            <!-- 로그인 버튼 -->
+            <a href="/login" class="btn btn-outline-primary mr-2">로그인</a>
+            <a href="/join" class="btn btn-outline-primary">회원가입</a>
+        </div>
+        <div th:if="${loggedInUser != null}">
+            <!-- 로그아웃 버튼 -->
+            <a href="/logout" class="btn btn-outline-primary mr-2">로그아웃</a>
+            <a href="/mypage" class="btn btn-outline-primary">마이페이지</a>
+        </div>
+    </div>
+
+    <h1 class="text-center">메인 화면</h1>
+
+    <!-- QnA 게시판 섹션 -->
+    <div class="my-5">
+        <h2>
+            <a href="/main/qnaPosting" style="text-decoration: none;">Q&A 게시판</a>
+        </h2>
+
+        <!-- QnA 게시글 목록 -->
+        <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>제목</th>
+                <th>추천수</th>
+                <th>조회수</th>
+                <th>카테고리</th>
+                <th>작성시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${qnaPosts == null || #lists.isEmpty(qnaPosts)}">
+                <td colspan="6" class="text-center">게시글이 없습니다.</td>
+            </tr>
+            <!-- QnA 게시글이 있는 경우 -->
+            <tr th:each="post : ${qnaPosts}">
+                <td th:text="${post.id}">ID</td>
+                <td>
+                    <span th:text="'[' + ${post.category} + ']'"></span>
+                    <span th:text="${post.complete ? '[완료]' : '[미완료]'}"></span>
+                    <a th:href="@{/main/qnaPosting/{posts_id}(posts_id=${post.id})}" th:text="${post.postsTitle}" class="text-primary font-weight-bold"></a>
+                </td>
+                <td th:text="${post.heartCount}">추천수</td>
+                <td th:text="${post.views}">조회수</td>
+                <td th:text="${post.category}">카테고리</td>
+                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성시간</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 스터디모집 게시판 섹션 -->
+    <div class="my-5">
+        <h2>
+            <a href="/main/studyPosting" style="text-decoration: none;">스터디모집 게시판</a>
+        </h2>
+
+        <!-- 스터디모집 게시글 목록 -->
+        <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>제목</th>
+                <th>추천수</th>
+                <th>조회수</th>
+                <th>카테고리</th>
+                <th>작성시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${studyPosts == null || #lists.isEmpty(studyPosts)}">
+                <td colspan="6" class="text-center">게시글이 없습니다.</td>
+            </tr>
+            <!-- 스터디모집 게시글이 있는 경우 -->
+            <tr th:each="post : ${studyPosts}">
+                <td th:text="${post.id}">ID</td>
+                <td>
+                    <span th:text="'[' + ${post.category} + ']'"></span>
+                    <span th:text="${post.complete ? '[완료]' : '[미완료]'}"></span>
+                    <a th:href="@{/main/studyPosting/{posts_id}(posts_id=${post.id})}" th:text="${post.postsTitle}" class="text-primary font-weight-bold"></a>
+                </td>
+                <td th:text="${post.heartCount}">추천수</td>
+                <td th:text="${post.views}">조회수</td>
+                <td th:text="${post.category}">카테고리</td>
+                <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성시간</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

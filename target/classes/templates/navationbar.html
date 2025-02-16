@@ -1,0 +1,36 @@
+<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/main">스마일</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- 로그아웃 상태: 로그인, 회원가입 링크 표시 -->
+                <li class="nav-item" th:if="${loggedInUser == null}">
+                    <a class="nav-link" href="/login">로그인</a>
+                </li>
+                <li class="nav-item" th:if="${loggedInUser == null}">
+                    <a class="nav-link" href="/join">회원가입</a>
+                </li>
+
+                <!-- 로그인 상태: 로그아웃 링크만 표시 -->
+                <li class="nav-item" th:if="${loggedInUser != null}">
+                    <a class="nav-link" href="/logout">로그아웃</a>
+                </li>
+                <li class="nav-item" th:if="${loggedInUser != null}">
+                    <a class="nav-link" href="/mypage">마이페이지</a>
+                </li>
+
+                 <!--QnA게시판, Study게시판 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/main/qnaPosting">Q&A</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" href="/main/studyPosting">스터디모집</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

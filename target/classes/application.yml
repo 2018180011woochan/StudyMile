@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: board
+  datasource:
+     url: jdbc:mariadb://14.35.173.14:12026/DB3
+     username: root
+     password: passw0rd
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        use-new-id-generator-mappings: false
+    format_sql: true
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.MariaDBDialect
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+mybatis:
+  mapper-locations: classpath:com/example/board/sql/*.xml

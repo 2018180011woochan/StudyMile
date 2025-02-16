@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Q&A 게시판</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- 네비게이션바 -->
+    <nav th:replace="~{navationbar :: navbarFragment}"></nav>
+
+    <div class="container mt-5">
+        <h1>Q&A 게시판</h1>
+
+        <!-- 검색 및 정렬 영역 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- 정렬 버튼 (왼쪽 정렬) -->
+        <form th:action="@{/main/qnaPosting}" method="get" class="d-inline">
+            <input type="hidden" name="keyword" th:value="${keyword}">
+            <input type="hidden" name="page" value="1">
+
+            <button type="submit" name="sort" value="RECENT" th:classappend="${sortOption == 'RECENT'} ? 'active btn-primary' : 'btn-light'" class="btn btn-sm">최신순</button>
+            <button type="submit" name="sort" value="HEART" th:classappend="${sortOption == 'HEART'} ? 'active btn-primary' : 'btn-light'" class="btn btn-sm">추천순</button>
+            <button type="submit" name="sort" value="VIEW" th:classappend="${sortOption == 'VIEW'} ? 'active btn-primary' : 'btn-light'" class="btn btn-sm">조회순</button>
+            <button type="submit" name="sort" value="COMMENT" th:classappend="${sortOption == 'COMMENT'} ? 'active btn-primary' : 'btn-light'" class="btn btn-sm">댓글순</button>
+        </form>
+
+        <!-- 검색 폼 (오른쪽 정렬) -->
+        <form th:action="@{/main/qnaPosting/search}" method="get" class="d-inline mb-2">
+            <input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}" class="form-control d-inline" style="width: 200px;">
+            <button type="submit" class="btn btn-primary">검색</button>
+        </form>
+    </div>
+
+        <!-- 게시글 목록 -->
+        <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th style="width:5%">번호</th>
+                    <th style="width:5%">추천</th>
+                    <th style="width:15%">제목</th>
+                    <th style="width:10%">댓글수</th>
+                    <th style="width:10%">조회수</th>
+                    <th style="width:10%">카테고리</th>
+                    <th style="width:10%">상태</th>
+                    <th style="width:15%">작성일시</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${posts == null}">
+                    <td colspan="8">게시글이 없습니다.</td>
+                </tr>
+
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.id}">ID</td>
+                    <td th:text="${post.heartCount}">추천</td>
+                    <td>
+                        <a th:href="@{/main/qnaPosting/{posts_id}(posts_id=${post.id})}"
+                           th:text="${post.postsTitle}"
+                           class="text-primary font-weight-bold"></a> <!-- 여기가 수정되지 않은 부분입니다. -->
+                    </td>
+                    <td th:text="${post.commentCount}">댓글수</td>
+                    <td th:text="${post.views}">조회수</td>
+                    <td th:text="${post.category}">카테고리</td>
+                    <td th:text="${post.complete ? '완료' : '미완료'}">상태</td>
+                    <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성시간</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 글 작성 버튼 -->
+        <div class="d-flex justify-content-end mt-2">
+            <a th:href="@{/main/qnaPosting/create}" class="btn btn-dark">글 작성</a>
+        </div>
+        
+        <!-- 페이지 번호 출력 및 페이지 이동 -->
+        
+
+        <div class="d-flex justify-content-center mt-4">
+		    <nav>
+		    	<span>Page </span>
+        <span th:text="${currentPage}">현재 페이지</span> /
+        <span th:text="${totalPages}">전체 페이지 수</span>
+		        <ul class="pagination">
+		            <!-- 이전 페이지 버튼 (현재 페이지가 1보다 클 때만 표시) -->
+		            <li class="page-item" th:if="${currentPage > 1}">
+		                <a class="page-link" th:href="@{/main/qnaPosting/search(page=${currentPage - 1}, sort=${sort}, keyword=${keyword})}">이전</a>
+		            </li>
+		
+		            <!-- 페이지 번호 표시 -->
+		            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active'">
+		                <a class="page-link" th:href="@{/main/qnaPosting/search(page=${i}, sort=${sort}, keyword=${keyword})}" th:text="${i}"></a>
+		            </li>
+		
+		            <!-- 다음 페이지 버튼 (현재 페이지가 마지막 페이지보다 작을 때만 표시) -->
+		            <li class="page-item" th:if="${currentPage < totalPages}">
+		                <a class="page-link" th:href="@{/main/qnaPosting/search(page=${currentPage + 1}, sort=${sort}, keyword=${keyword})}">다음</a>
+		            </li>
+		        </ul>
+		    </nav>
+		</div>
+
+        
+        
+    </div>
+</body>
+</html>

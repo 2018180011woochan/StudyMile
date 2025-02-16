@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 페이지</title>
+  <link rel="stylesheet" href="/joinstyle.css">
+</head>
+<body>
+<div class="login-container">
+  <img src="/images/smile_logo.png" alt="Smile Logo" class="smile-image">
+  <h2>회원가입</h2>
+  <form action="/join" method="POST">
+    <!-- 아이디와 중복 확인 버튼 -->
+    <div class="form-group">
+      <label for="account">아이디</label>
+      <input type="text" id="account" name="account" required>
+      <button type="button" onclick="checkAccountDuplicate()" class="button-inline">중복 확인</button>
+    </div>
+    <span id="accountMessage" class="message"></span>
+
+    <!-- 비밀번호 입력 -->
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+
+    <!-- 비밀번호 확인 -->
+    <div class="form-group">
+      <label for="confirmPassword">비밀번호 확인</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+
+    <!-- 이름 입력 -->
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+
+    <!-- 성별 선택 -->
+    <div class="form-group">
+      <label for="gender">성별</label>
+      <select id="gender" name="gender" required>
+        <option value="남자">남자</option>
+        <option value="여자">여자</option>
+      </select>
+    </div>
+
+    <!-- 회원가입 버튼 -->
+    <button type="submit" class="submit-btn">회원가입</button>
+  </form>
+</div>
+
+<script>
+  function checkAccountDuplicate() {
+    var account = document.getElementById("account").value;
+
+    if (account) {
+      fetch(`/join/check-account?account=${account}`)
+              .then(response => response.json())
+              .then(data => {
+                var messageElement = document.getElementById("accountMessage");
+                if (data) {
+                  messageElement.textContent = "이미 사용 중인 아이디입니다.";
+                  messageElement.style.color = "red";
+                } else {
+                  messageElement.textContent = "사용 가능한 아이디입니다.";
+                  messageElement.style.color = "green";
+                }
+              })
+              .catch(error => {
+                console.error("아이디 중복 체크 실패:", error);
+              });
+    } else {
+      document.getElementById("accountMessage").textContent = "아이디를 입력해주세요.";
+    }
+  }
+</script>
+</body>
+</html>

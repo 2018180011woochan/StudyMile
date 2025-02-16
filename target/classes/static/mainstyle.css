@@ -1,0 +1,12 @@
+ /* 네비게이션 바에서 이미지 크기 조절 */
+        .navbar-brand img {
+            height: 3px; /* 이미지 높이를 반으로 줄임 */
+            margin-right: 20px; /* 이미지와 텍스트 사이 간격 */
+        }
+        .navbar-brand span {
+            font-size: 40px; /* 글씨 크기 조정 */
+            font-weight: bold; /* 볼드체 적용 */
+        }
+        .navbar {
+            justify-content: center; /* 가운데 정렬 */
+        }

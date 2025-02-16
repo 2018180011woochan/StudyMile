@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+<nav th:replace="~{navationbar :: navbarFragment}"></nav>
+    
+
+    <div class="container">
+	<h5 class="my-3 border-bottom pb-2">게시글 수정</h5>
+
+        <!-- 게시물 수정 폼 -->
+        <form th:action="@{/main/qnaPosting/update/{id}(id=${data.Id})}" method="post">
+	        <div>
+	            <label>게시판 속성: </label>
+	            <span>Q&A 게시판</span>
+	        </div>
+	        
+        	<input type="hidden" name="_method" value="put" />
+		    <!-- id 값을 hidden 필드로 전달 -->
+		    <input type="hidden" name="id" th:value="${data.Id}" />
+		    <div class="post-content">
+		    	<!-- 카테고리 선택 -->
+                <div>
+                    <label for="category">카테고리: </label>
+                    <select name="category" id="category">
+                        <option value="프론트엔드" th:selected="${data.category == '프론트엔드'}">프론트엔드</option>
+                        <option value="파이썬" th:selected="${data.category == '파이썬'}">파이썬</option>
+                        <option value="알고리즘" th:selected="${data.category == '알고리즘'}">알고리즘</option>
+                        <option value="스프링" th:selected="${data.category == '스프링'}">스프링</option>
+                        <option value="자바" th:selected="${data.category == '자바'}">자바</option>
+                        <option value="기타" th:selected="${data.category == '기타'}">기타</option>
+                    </select>
+                </div>
+		    
+			    <!-- 완료 여부 선택 -->
+	             <div>
+		            <label for="completeStatus">완료 여부: </label>
+		            <select id="completeStatus" name="completeStatus" required>
+		                <option th:value="1" th:selected="${data.complete} == true">완료</option>
+		                <option th:value="0" th:selected="${data.complete} == false">미완료</option>
+		            </select>
+		        </div>
+		        <div class="mb-3">
+		            <label for="postsTitle">제목</label>
+		            <input type="text" id="postsTitle" name="postsTitle" th:value="${data.postsTitle}" required class="form-control">
+		        </div>
+		        <div class="mb-3">
+		            <label for="postsContents">내용</label>
+		            <textarea id="postsContents" name="postsContents" required th:text="${data.postsContents}" class="form-control" rows="10"></textarea>
+		        </div>
+		        <div class="d-flex justify-content-end mt-2">
+		            <button type="submit" class="btn btn-dark me-2">저장하기</button>
+		            
+		            <a th:href="@{/main/qnaPosting}">
+		                <button type="button" class="btn btn-dark">취소</button>
+		            </a>
+		        </div>
+		    </div>
+		</form>
+ 
+    </div>
+
+</body>
+</html>

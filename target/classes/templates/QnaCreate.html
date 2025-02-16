@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+<nav th:replace="~{navationbar :: navbarFragment}"></nav>
+<div class="container">
+    
+    <h5 class="my-3 border-bottom pb-2">게시글 작성</h5>
+    
+    <form action="/main/qnaPosting/create" method="post">
+        <!-- 게시판 속성 표시와 숨겨진 board_id 필드 -->
+        <div>
+            <label>게시판 속성: </label>
+            <span>Q&A 게시판</span>
+            <input type="hidden" name="board_id" value="1"> <!-- post.board_id 값 -->
+        </div>
+        
+        <!-- 카테고리 선택 -->
+        <div>
+            <label for="category">카테고리: </label>
+            <select name="category" id="category">
+                <option value="프론트엔드">프론트엔드</option>
+                <option value="파이썬">파이썬</option>
+                <option value="알고리즘">알고리즘</option>
+                <option value="스프링">스프링</option>
+                <option value="자바">자바</option>
+                <option value="기타">기타</option>
+            </select>
+        </div>
+        
+        <!-- 완료 여부 선택 -->
+        <div>
+            <label for="isComplete">완료 여부: </label>
+            <select name="isComplete" id="isComplete">
+                <option value="true">완료</option> <!-- 완료 시 post.is_complete = 1 -->
+                <option value="false">미완료</option> <!-- 미완료 시 post.is_complete = 0 -->
+            </select>
+        </div>
+        
+        <!-- 게시글 제목 입력 -->
+        <div class="mb-3">
+            <label for="postsTitle">제목</label>
+            <input type="text" id="postsTitle" name="postsTitle" placeholder="제목을 입력하세요" required class="form-control">
+        </div>
+        
+        <!-- 게시글 내용 입력 -->
+        <div class="mb-3">
+            <label for="postsContents">내용</label>
+            <textarea id="postsContents" name="postsContents" placeholder="내용을 입력하세요" required class="form-control" rows="10"></textarea>
+        </div>
+
+        <!-- 버튼들 -->
+        <div class="d-flex justify-content-end mt-2">
+            <!-- 작성 버튼 (form 제출) -->
+            <button type="submit" class="btn btn-dark me-2">저장하기</button>
+
+            <!-- 취소 버튼 (form 제출 없이 /qnaPosting 페이지로 이동) -->
+            <a href="/main/qnaPosting">
+                <button type="button" class="btn btn-dark">취소</button>
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
